@@ -6,4 +6,5 @@ import (
 
 func main(){
 	exps.UnblockingSendMsg()
+	exps.GetFuncName()
 }

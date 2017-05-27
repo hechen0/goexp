@@ -5,5 +5,5 @@ import (
 )
 
 func main(){
-	exps.RunSimple()
+	exps.DecodeJson()
 }

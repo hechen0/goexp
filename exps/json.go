@@ -2,27 +2,33 @@ package exps
 
 import (
 	"encoding/json"
-	"strings"
 	"fmt"
 	"log"
+	"strings"
 )
 
-type newJson struct {
-	name string `json:a_name`
-	age  int `json:a_age`
+type Language struct {
+	Id   int `json:"a_id"`
+	Name string `json:"a_name"`
 }
 
 func DecodeJson() {
-	a := `[
-		{"A_Name": "a name", "A_Age": "a age"},
-		{"a_nAme": "b name", "b_AGE": "b age"}
-	]`
 
-	var cc []newJson
-	err := json.NewDecoder(strings.NewReader(a)).Decode(&cc)
+	//String contains two JSON rows.
+	text := `
+	[
+	{"a_id": 100, "a_name": "Go"},{"A_iD": 200, "A_NaMe": "Java"
+	}
+	]
+	`
+	//text := "[{\"Id\": 100, \"Name\": \"Go\"}, {\"Id\": 200, \"Name\": \"Java\"}]"
+	// Get byte slice from string.
+
+	// Unmarshal string into structs.
+	var languages []Language
+	err := json.NewDecoder(strings.NewReader(text)).Decode(&languages)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Printf("%+v", cc)
+	fmt.Printf("%+v", languages)
 }

@@ -4,6 +4,7 @@ import (
 	"runtime"
 	"reflect"
 	"fmt"
+	"encoding/json"
 )
 
 
@@ -16,6 +17,15 @@ func GetFuncName(){
 
 	printname(a)
 	printname(GetFuncName)
+}
+
+func GetTypeName(){
+	var data = []byte(`{"status": 200}`)
+	var result map[string]interface{}
+	if err := json.Unmarshal(data, &result); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(reflect.TypeOf(result["status"]).Name())
 }
 
 func printname(a interface{}){

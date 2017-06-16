@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"io/ioutil"
+	"bytes"
 )
 
 type Language struct {
@@ -31,4 +33,30 @@ func DecodeJson() {
 		log.Fatal(err)
 	}
 	fmt.Printf("%+v", languages)
+}
+
+func EncodeJSON() {
+	type person struct {
+		Id     int `json:"id,omitempty"`
+		Name   *string `json:"name,omitempty"`
+		Gender *string `json:"gender,omitempty"`
+	}
+
+	a := &person{Id: 1, Name: String("tom")}
+
+	buf := new(bytes.Buffer)
+
+	err := json.NewEncoder(buf).Encode(a)
+
+	check_err(err)
+
+	output, err := ioutil.ReadAll(buf)
+
+	check_err(err)
+
+	fmt.Printf("%v", string(output))
+}
+
+func String(s string) *string {
+	return &s
 }

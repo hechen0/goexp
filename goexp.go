@@ -1,37 +1,75 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
-	fmt.Println(sumOfLeftLeaves(&TreeNode{1, nil, &TreeNode{2, &TreeNode{2, nil, nil}, nil}}))
+	root := &TreeNode{1,
+					  &TreeNode{2, nil, nil},
+					  &TreeNode{3, nil, nil},
+	}
+
+	postOrder(root)
 }
 
-func sortedArrayToBST(nums []int) *TreeNode {
-	if len(nums) <= 0 {
-		return nil
-	}
-	root := &TreeNode{nums[0], nil, nil}
+func inOrder(head *TreeNode) {
+	s := make([]*TreeNode, 0)
 
-	stack := []*TreeNode{root}
-	i := 1
-	for i < len(nums) && len(stack) > 0 {
-		node := stack[0]
-		node.Left = &TreeNode{nums[i], nil, nil}
-		stack = append(stack, node.Left)
-		i++
-		if i >= len(nums) {
-			break
-		}
-		node.Right = &TreeNode{nums[i], nil, nil}
-		stack = append(stack, node.Right)
-		i++
-		if i >= len(nums){
-			break
-		}
-		stack = stack[1:]
-	}
+	cur := head
 
-	return root
+	for len(s) != 0 || cur != nil {
+		for cur != nil {
+			s = append(s, cur)
+			cur = cur.Left
+		}
+
+		if len(s) != 0 {
+			cur = s[len(s)-1]
+			fmt.Println(cur.Val)
+			s = s[:len(s)-1]
+			cur = cur.Right
+		}
+	}
+}
+
+func preOrder(head *TreeNode) {
+	s := make([]*TreeNode, 0)
+	cur := head
+	for len(s) != 0 || cur != nil {
+		for cur != nil {
+			fmt.Println(cur.Val)
+			s = append(s, cur)
+			cur = cur.Left
+		}
+
+		if len(s) != 0 {
+			cur = s[len(s)-1]
+			s = s[:len(s)-1]
+			cur = cur.Right
+		}
+	}
+}
+
+func postOrder(head *TreeNode) {
+	s := make([]*TreeNode, 0)
+	s = append(s, head)
+
+	var pre, cur *TreeNode
+
+	for len(s) != 0 {
+		cur = s[len(s)-1]
+
+		if (cur.Left == nil && cur.Right == nil) || (pre != nil && (pre == cur.Left || pre == cur.Right)) {
+			fmt.Println(cur.Val)
+			s = s[:len(s)-1]
+			pre = cur
+		} else {
+			if cur.Right != nil {
+				s = append(s, cur.Right)
+			}
+
+			if cur.Left != nil {
+				s = append(s, cur.Left)
+			}
+		}
+	}
 }

@@ -1,33 +1,27 @@
 package priority_queue
 
-import "sort"
-
-type Interface interface {
-	sort.Interface
-	Push(x interface{})
-	Pop() interface{}
+type Ele struct {
+	Name   string
+	Weight int
 }
 
-func Init(h Interface){
-	n := h.Len()
+type PQ []*Ele
 
-	for i:= 0;i<n;i++{
-		down(h, i)
-	}
+func (pq *PQ) Less(i, j int) bool {
+	return (*pq)[i].Weight < (*pq)[j].Weight
 }
 
-func down(h Interface, i int){
-	n := h.Len()
-	for {
-		j1 := 2*i + 1
-		if j1 >= n || j1 < 0 {
-			break
-		}
+func (pq *PQ) Len() int { return len(*pq) }
 
-		j := j1
+func (pq *PQ) Swap(i, j int) { (*pq)[i], (*pq)[j] = (*pq)[j], (*pq)[i] }
 
-		if j2 := j1+1; j2 < n && h.Less(j2, j1) {
+func (pq *PQ) Push(x interface{}) {
+	ele := x.(*Ele)
+	*pq = append(*pq, ele)
+}
 
-		}
-	}
+func (pq *PQ) Pop() interface{} {
+	ele := (*pq)[pq.Len()-1]
+	*pq = (*pq)[0 : pq.Len()-1]
+	return ele
 }

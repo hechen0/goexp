@@ -8,6 +8,69 @@ import (
 	"container/heap"
 )
 
+func inOrder(head *TreeNode) {
+	s := make([]*TreeNode, 0)
+
+	cur := head
+
+	for len(s) != 0 || cur != nil {
+		for cur != nil {
+			s = append(s, cur)
+			cur = cur.Left
+		}
+
+		if len(s) != 0 {
+			cur = s[len(s)-1]
+			fmt.Printf("%d ", cur.Val)
+			s = s[:len(s)-1]
+			cur = cur.Right
+		}
+	}
+}
+
+func preOrder(head *TreeNode) {
+	s := make([]*TreeNode, 0)
+	cur := head
+	for len(s) != 0 || cur != nil {
+		for cur != nil {
+			fmt.Printf("%d ", cur.Val)
+			s = append(s, cur)
+			cur = cur.Left
+		}
+
+		if len(s) != 0 {
+			cur = s[len(s)-1]
+			s = s[:len(s)-1]
+			cur = cur.Right
+		}
+	}
+}
+
+func postOrder(head *TreeNode) {
+	s := make([]*TreeNode, 0)
+	s = append(s, head)
+
+	var pre, cur *TreeNode
+
+	for len(s) != 0 {
+		cur = s[len(s)-1]
+
+		if (cur.Left == nil && cur.Right == nil) || (pre != nil && (pre == cur.Left || pre == cur.Right)) {
+			fmt.Printf("%d ", cur.Val)
+			s = s[:len(s)-1]
+			pre = cur
+		} else {
+			if cur.Right != nil {
+				s = append(s, cur.Right)
+			}
+
+			if cur.Left != nil {
+				s = append(s, cur.Left)
+			}
+		}
+	}
+}
+
 func isPerfectSquare(num int) bool {
 	a := sqrt(num)
 	if a*a == num {
@@ -325,28 +388,6 @@ func findPoisonedDuration(timeSeries []int, duration int) int {
 	return result
 }
 
-func binarySearch(slice []int, v int) int {
-	start := 0
-	end := len(slice)
-	mid := (start + end) / 2
-
-	for start <= end {
-		if slice[mid] == v {
-			return mid
-		}
-
-		if slice[mid] < v {
-			start = mid + 1
-		} else {
-			end = mid - 1
-		}
-
-		mid = (start + end) / 2
-	}
-
-	return -1
-}
-
 func rightSideView(root *TreeNode) []int {
 	if root == nil {
 		return nil
@@ -542,7 +583,7 @@ func doPivot(slice *[]int, low, high int) int {
 	s := *slice
 	i := 0
 
-	for j := low; j <= high-1; j++ {
+	for j := low; j < high; j++ {
 		if s[j] <= pivot {
 			s[i], s[j] = s[j], s[i]
 			i++

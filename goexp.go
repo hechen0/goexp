@@ -5,8 +5,6 @@ import (
 	"net/url"
 )
 
-
-
 func main() {
 	s := `{"source":"LINKAPP","platForm":"PC"}`
 
